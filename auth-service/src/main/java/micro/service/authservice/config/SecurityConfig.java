@@ -1,5 +1,9 @@
 package micro.service.authservice.config;
 
+import micro.service.authservice.config.filter.JwtFilter;
+import micro.service.authservice.exception.CommonExceptionHandler;
+import micro.service.authservice.exception.FilterChainExceptionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,45 +13,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-//@RequiredArgsConstructor
 public class SecurityConfig {
-//    @Autowired
-//    private final UserDetailsService userDetailsService;
 
-//    private final AuthEntryPointJwt unauthorizedHandler;
+    @Autowired
+    private JwtFilter jwtFilter;
 
-//    private final AuthTokenFilter authenticationJwtTokenFilter;
+    @Autowired
+    private CommonExceptionHandler commonExceptionHandler;
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Autowired
+    private FilterChainExceptionHandler filterChainExceptionHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.cors().and().csrf().disable()
-//                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//                .authorizeRequests()
-//                .antMatchers(UrlMapping.AUTH + UrlMapping.SIGN_UP).permitAll()
-//                .antMatchers(UrlMapping.AUTH + UrlMapping.LOGIN).permitAll()
-//                .antMatchers(UrlMapping.VALIDATE_JWT).permitAll()
-//                .antMatchers("/api/test/**").permitAll()
-//                .anyRequest().authenticated();
-//
-//        http.addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,12 +40,12 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**")
                         .permitAll()
                         .anyRequest().authenticated()
-
-
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
 
         return http.build();
     }

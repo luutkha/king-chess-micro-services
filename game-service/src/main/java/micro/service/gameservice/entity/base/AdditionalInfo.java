@@ -1,6 +1,5 @@
 package micro.service.gameservice.entity.base;
 
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 

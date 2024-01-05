@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,15 +31,13 @@ public class UserController {
 
 
     @PostMapping("/auth/login")
-    public String login(@RequestBody LoginRequest loginRequest) throws Exception {
+    public String login(@RequestBody LoginRequest loginRequest) throws AuthenticationException {
         System.out.println("CATCH");
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-            );
-        } catch (Exception ex) {
-            throw new Exception("invalid username/password");
-        }
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+        );
+
         return jwtUtils.generateToken(loginRequest.getEmail());
     }
 

@@ -7,6 +7,5 @@ public class ChessBoard {
     private Integer count;
 
 
-
 //    private
 }

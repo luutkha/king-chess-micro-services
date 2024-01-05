@@ -1,7 +1,5 @@
 package micro.service.chessservice.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import micro.service.chessservice.entity.MatchHistory;
 import micro.service.chessservice.service.MatchHistoryService;
@@ -19,10 +17,6 @@ public class MatchHistoryController {
 
     @Autowired
     private MatchHistoryService matchHistoryService;
-
-//    public MatchHistoryController(MatchHistoryService matchHistoryService) {
-//        this.matchHistoryService = matchHistoryService;
-//    }
 
     @PostMapping
     public ResponseEntity<String> saveMatchHistory(@RequestBody MatchHistory matchHistory) {

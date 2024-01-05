@@ -11,7 +11,8 @@ import java.util.List;
 @Service
 public class GameServiceImpl implements GameService {
     @Autowired
-    private  GameRepository gameRepository;
+    private GameRepository gameRepository;
+
     @Override
     public List<Game> getAllGames() {
         return gameRepository.findAll();

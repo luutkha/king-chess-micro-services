@@ -1,12 +1,10 @@
 package micro.service.chessservice.entity.movable;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import micro.service.chessservice.constant.ChessBoardConstant;
 import micro.service.chessservice.entity.Move;
 import micro.service.chessservice.entity.Square;
-
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +31,7 @@ public class XMove extends MovableDecorator {
                 this.movablePosition.add(new Square(position.getX() + i, position.getY() - i));
             }
         }
-        for (int i = position.getX()-1; i >= ChessBoardConstant.MIN_X ; i--) {
+        for (int i = position.getX() - 1; i >= ChessBoardConstant.MIN_X; i--) {
             if ((position.getY() + i) <= ChessBoardConstant.MAX_Y)
                 this.movablePosition.add(new Square(position.getX() - i, position.getY() + i));
             if ((position.getY() - i) >= ChessBoardConstant.MIN_Y)
