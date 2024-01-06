@@ -9,6 +9,7 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.server.reactive.HttpHeadResponseDecorator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,10 +23,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Autowired
     private RouteValidator validator;
 
-    //    @Autowired
-//    private RestTemplate template;
-//    @Autowired
-//    private JwtUtil jwtUtil;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -71,7 +68,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                                     return chain.filter(exchange);
                                 } else {
                                     log.error("REQUEST ERROR ON TOKEN");
-                                    log.info(response);
                                     exchange.getResponse().setStatusCode(statusCode);
                                     return exchange.getResponse().setComplete();
                                 }

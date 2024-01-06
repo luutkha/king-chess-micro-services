@@ -26,15 +26,30 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
             SignatureException.class,
             JwtException.class,
     })
-
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ResponseEntity<Response<Object>> handleExpiredToken(
             RuntimeException ex, WebRequest request) {
-        log.info("EXPIRED EXCEPTION HANDLED");
+        log.error("TOKEN EXCEPTION HANDLED");
+        String errorMessage;
+        errorMessage = generateErrorMessage(ex);
         ValidateTokenResponse bodyOfResponse = ValidateTokenResponse.builder().isValid(false).build();
-        Response<Object> validateTokenResponseResponse = Response.builder().data(bodyOfResponse).statusCode(500).message("EXPIRED/INVALID TOKEN").build();
-        return ResponseEntity.ok(validateTokenResponseResponse);
+        Response<Object> validateTokenResponseResponse = Response.builder().data(bodyOfResponse).statusCode(500).message(errorMessage).build();
+        return new ResponseEntity<>(validateTokenResponseResponse, HttpStatus.UNAUTHORIZED);
 
+    }
+
+    private static String generateErrorMessage(RuntimeException ex) {
+        String errorMessage;
+        if (ex instanceof SignatureException) {
+            errorMessage = "Signature Exception";
+        } else if (ex instanceof ExpiredJwtException) {
+            errorMessage = "Expired JWT Exception";
+        } else if (ex instanceof JwtException) {
+            errorMessage = "JWT Exception";
+        } else {
+            errorMessage = "Unknown Exception";
+        }
+        return errorMessage;
     }
 
     @ExceptionHandler(value

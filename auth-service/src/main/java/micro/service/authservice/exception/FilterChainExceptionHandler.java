@@ -24,15 +24,13 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
     private HandlerExceptionResolver resolver;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, JwtException {
-//        log.error("START", this.getClass().toString());
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-//            log.error("Spring Security Filter Chain Exception:", e);
+            log.error(e);
             resolver.resolveException(request, response, null, e);
         }
-//        log.error("END", this.getClass().toString());
 
     }
 }
