@@ -1,6 +1,7 @@
 package micro.service.authservice.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ public class JwtUtils {
 
     private final String secret = "playwithmesecret";
 
-    public String extractUsername(String token) {
+    public String extractUsername(String token) throws JwtException {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -29,8 +30,15 @@ public class JwtUtils {
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    private Claims extractAllClaims(String token) throws JwtException {
+        try {
+
+            Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            return body;
+
+        } catch (Exception e) {
+            throw new JwtException(e.getMessage());
+        }
     }
 
     private Boolean isTokenExpired(String token) {

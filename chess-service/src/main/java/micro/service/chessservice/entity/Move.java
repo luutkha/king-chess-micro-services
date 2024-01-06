@@ -6,5 +6,6 @@ import java.util.Set;
 public interface Move {
 
     boolean moveTo();
-   Set<Square> addMovablePosition(Set<Square> movablePosition);
+
+    Set<Square> addMovablePosition(Set<Square> movablePosition);
 }

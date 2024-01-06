@@ -1,5 +1,6 @@
 package micro.service.authservice.exception;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,12 +24,15 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
     private HandlerExceptionResolver resolver;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, JwtException {
+//        log.error("START", this.getClass().toString());
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            log.error("Spring Security Filter Chain Exception:", e);
+//            log.error("Spring Security Filter Chain Exception:", e);
             resolver.resolveException(request, response, null, e);
         }
+//        log.error("END", this.getClass().toString());
+
     }
 }

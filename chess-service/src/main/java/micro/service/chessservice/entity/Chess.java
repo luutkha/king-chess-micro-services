@@ -1,7 +1,6 @@
 package micro.service.chessservice.entity;
 
 import lombok.Data;
-import lombok.Getter;
 import micro.service.chessservice.constant.ChessUnit;
 import micro.service.chessservice.constant.Side;
 

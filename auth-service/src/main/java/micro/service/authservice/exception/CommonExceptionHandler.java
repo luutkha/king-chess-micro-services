@@ -1,7 +1,11 @@
 package micro.service.authservice.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.SignatureException;
 import lombok.extern.log4j.Log4j2;
+import micro.service.authservice.entity.response.Response;
+import micro.service.authservice.entity.response.ValidateTokenResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +21,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value
             = {
-//            RuntimeException.class, IllegalArgumentException.class, IllegalStateException.class,
-            ExpiredJwtException.class})
+            SignatureException.class,
+            ExpiredJwtException.class,
+            SignatureException.class,
+            JwtException.class,
+    })
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ResponseEntity<Object> handleExpiredToken(
+    protected ResponseEntity<Response<Object>> handleExpiredToken(
             RuntimeException ex, WebRequest request) {
         log.info("EXPIRED EXCEPTION HANDLED");
-        String bodyOfResponse = "Expired TOKEN";
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.CONFLICT, request);
+        ValidateTokenResponse bodyOfResponse = ValidateTokenResponse.builder().isValid(false).build();
+        Response<Object> validateTokenResponseResponse = Response.builder().data(bodyOfResponse).statusCode(500).message("EXPIRED/INVALID TOKEN").build();
+        return ResponseEntity.ok(validateTokenResponseResponse);
+
     }
 
     @ExceptionHandler(value
