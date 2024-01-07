@@ -2,7 +2,6 @@ package micro.service.chessservice.entity.index;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;
-import lombok.Getter;
 
 import java.io.Serializable;
 

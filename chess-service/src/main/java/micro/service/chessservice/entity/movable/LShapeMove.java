@@ -8,18 +8,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Log4j2
-public class LShapeMove extends MovableDecorator{
+public class LShapeMove extends MovableDecorator {
     private final Square position;
     private Set<Square> movablePosition;
+
     public LShapeMove(Move move, Square position) {
         super(move);
         this.position = position;
         this.movablePosition = new HashSet<>();
     }
+
     private void setPossiblePositionDefault() {
-        this.movablePosition.add(new Square(0,0));
+        this.movablePosition.add(new Square(0, 0));
 
     }
+
     @Override
     public Set<Square> addMovablePosition(Set<Square> movablePosition) {
         log.info("addMovablePosition");

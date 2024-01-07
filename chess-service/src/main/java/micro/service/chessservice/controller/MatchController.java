@@ -3,7 +3,10 @@ package micro.service.chessservice.controller;
 import micro.service.chessservice.config.WebClientConfig;
 import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.constant.SideConstant;
-import micro.service.chessservice.entity.*;
+import micro.service.chessservice.entity.ChessBoard;
+import micro.service.chessservice.entity.ChessUnitMovable;
+import micro.service.chessservice.entity.MatchHistory;
+import micro.service.chessservice.entity.Square;
 import micro.service.chessservice.entity.chess.Queen;
 import micro.service.chessservice.entity.external.Game;
 import micro.service.chessservice.service.MatchHistoryService;
@@ -11,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,12 +23,11 @@ import java.util.List;
 @RequestMapping("/matches")
 public class MatchController {
 
+    public static final String GAME_SERVICE_URI = "lb://GAME-SERVICE//";
     @Autowired
     private MatchHistoryService matchHistoryService;
-
     @Autowired
     private WebClientConfig webClientConfig;
-    public static final String GAME_SERVICE_URI = "lb://GAME-SERVICE//";
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<MatchHistory> getMatchById(@PathVariable Long id) {
@@ -37,6 +38,13 @@ public class MatchController {
 //            return ResponseEntity.notFound().build();
 //        }
 //    }
+
+    private static List<ChessUnitMovable> createChessUnitMovables() {
+        ChessUnitMovable chessUnitMovable = ChessUnitMovable.builder().chessUnitConstant(ChessUnitConstant.KING).movablePositions(new HashSet<>()).currentPosition(new Square(1, 1)).build();
+        List<ChessUnitMovable> chessUnitMovables = new ArrayList<>();
+        chessUnitMovables.add(chessUnitMovable);
+        return chessUnitMovables;
+    }
 
     @GetMapping("/test")
     public ResponseEntity<Queen> test() {
@@ -55,13 +63,6 @@ public class MatchController {
         chessBoard.setGameId(resp.getId());
         chessBoard.createGameStartMovable();
         return ResponseEntity.status(HttpStatus.CREATED).body(chessBoard);
-    }
-
-    private static List<ChessUnitMovable> createChessUnitMovables() {
-        ChessUnitMovable chessUnitMovable = ChessUnitMovable.builder().chessUnitConstant(ChessUnitConstant.KING).movablePositions(new HashSet<>()).currentPosition(new Square(1, 1)).build();
-        List<ChessUnitMovable> chessUnitMovables = new ArrayList<>();
-        chessUnitMovables.add(chessUnitMovable);
-        return chessUnitMovables;
     }
 
     @PostMapping("/move")
