@@ -1,33 +1,37 @@
 package micro.service.chessservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import micro.service.chessservice.constant.ChessUnit;
-import micro.service.chessservice.constant.Side;
+import micro.service.chessservice.constant.ChessUnitConstant;
+import micro.service.chessservice.constant.SideConstant;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "match_history")
+@Table(name = "match_history", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"game_id", "step"})
+})
 @Entity
+@Builder
+//@IdClass(MatchHistoryId.class)
 public class MatchHistory {
 
-    private String gameId;
     @Id
-    private Long id;
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    @Column(name = "game_id")
+    private Integer gameId;
     private Integer step;
     @NotNull
-    private ChessUnit chessUnit;
+    private ChessUnitConstant chessUnitConstant;
     @NotNull
-    private Side side;
+    private SideConstant sideConstant;
     @Min(1)
     @Max(8)
     @NotNull
@@ -44,6 +48,5 @@ public class MatchHistory {
     @NotNull
     @Max(8)
     private Integer currentPositionY;
-
 
 }

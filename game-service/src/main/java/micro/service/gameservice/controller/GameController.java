@@ -19,13 +19,13 @@ public class GameController {
 //        this.gameService = gameService;
 //    }
 
-    @GetMapping("/games")
+    @GetMapping()
     public ResponseEntity<List<Game>> getAllGames() {
         List<Game> games = gameService.getAllGames();
         return ResponseEntity.ok(games);
     }
 
-    @GetMapping("/games/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Game> getGameById(@PathVariable Long id) {
         Game game = gameService.getGameById(id);
         if (game != null) {
@@ -35,13 +35,14 @@ public class GameController {
         }
     }
 
-    @PostMapping("/games")
-    public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        Game createdGame = gameService.createGame(game);
+    @PostMapping()
+//    public ResponseEntity<Game> createGame(@RequestBody Game game) {
+    public ResponseEntity<Game> createGame() {
+        Game createdGame = gameService.createGame(new Game());
         return ResponseEntity.ok(createdGame);
     }
 
-    @PutMapping("/games/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestBody Game game) {
         Game updatedGame = gameService.updateGame(id, game);
         if (updatedGame != null) {

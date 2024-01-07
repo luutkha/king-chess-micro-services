@@ -1,5 +1,7 @@
-package micro.service.chessservice.entity;
+package micro.service.chessservice.entity.base;
 
+
+import micro.service.chessservice.entity.Square;
 
 import java.util.Set;
 

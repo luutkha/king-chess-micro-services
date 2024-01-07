@@ -1,6 +1,6 @@
 package micro.service.chessservice.constant;
 
-public enum Side {
+public enum SideConstant {
     BLACK,
     WHITE
 }

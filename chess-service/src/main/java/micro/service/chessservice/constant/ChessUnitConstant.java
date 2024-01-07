@@ -1,10 +1,10 @@
 package micro.service.chessservice.constant;
 
-public enum ChessUnit {
-    KING,
-    QUEEN,
+public enum ChessUnitConstant {
     ROOK,
-    BISHOP,
     KNIGHT,
+    KING,
+    BISHOP,
+    QUEEN,
     PAWN
 }

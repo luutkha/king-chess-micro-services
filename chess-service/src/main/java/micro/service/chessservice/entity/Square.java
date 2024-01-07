@@ -1,6 +1,7 @@
 package micro.service.chessservice.entity;
 
 import lombok.*;
+import micro.service.chessservice.constant.ChessBoardConstant;
 
 @Getter
 @Setter
@@ -17,6 +18,5 @@ public class Square {
 //    @Id
 //    @GeneratedValue
 //    private Long id;
-
 
 }

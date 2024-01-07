@@ -26,9 +26,9 @@ public class MatchHistoryController {
     }
 
     @GetMapping("/{matchId}")
-    public ResponseEntity<MatchHistory> getMatchHistoryById(@PathVariable String matchId) {
+    public ResponseEntity<List<MatchHistory>> getMatchHistoryById(@PathVariable Integer matchId) {
         // Logic to retrieve the match history by ID
-        MatchHistory matchHistory = matchHistoryService.getMatchHistoryById(matchId);
+        List<MatchHistory> matchHistory = matchHistoryService.getMatchHistoryById(matchId);
         if (matchHistory != null) {
             return ResponseEntity.ok(matchHistory);
         } else {

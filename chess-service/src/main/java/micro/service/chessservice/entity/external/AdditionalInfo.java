@@ -1,4 +1,4 @@
-package micro.service.gameservice.entity.base;
+package micro.service.chessservice.entity.external;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -12,15 +12,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.Date;
 
 @Data
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 public class AdditionalInfo {
 
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
+//    @CreatedDate
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
 
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
+//    @LastModifiedDate
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 }

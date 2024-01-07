@@ -1,13 +1,30 @@
 package micro.service.chessservice.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import micro.service.chessservice.constant.ChessUnit;
-import micro.service.chessservice.constant.Side;
+import lombok.NoArgsConstructor;
+import micro.service.chessservice.constant.ChessUnitConstant;
+import micro.service.chessservice.constant.SideConstant;
+
+import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Chess {
-    private String name;
-    private ChessUnit type; // black or white
-    private Side side;
+//    private String name;
+//    private ChessUnit type;
+private ChessUnitConstant type;
+
+    private SideConstant side;  // black or white
     private Square position;
+    private Set<Square> possibleMoves;
+
+//    public Chess(Side side, Square position, Set<Square> possibleMoves) {
+//        this.side = side;
+//        this.position = position;
+//        this.possibleMoves = possibleMoves;
+//    }
 }

@@ -8,9 +8,13 @@ import java.util.List;
 public interface MatchHistoryService {
     void saveMatchHistory(MatchHistory matchHistory);
 
-    MatchHistory getMatchHistoryById(String matchId);
+    List<MatchHistory> getMatchHistoryById(Integer matchId);
 
     List<MatchHistory> getAllMatchHistories();
 
     void deleteMatchHistoryById(String matchId);
+
+    MatchHistory createMatch();
+
+    MatchHistory moveAChess(MatchHistory match);
 }
