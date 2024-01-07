@@ -25,31 +25,6 @@ public class ChessBoard {
     private Integer count;
     private List<Chess> chessMaps;
 
-    public void createGameStartMovable() {
-        List<Chess> chessList = new ArrayList<>();
-
-        generateBasePositionOfChess(chessList);
-        List<Chess> chessListTemp = new ArrayList<>(chessList);
-        if (chessList.isEmpty()) {
-            log.error("chessList EMPTY");
-        } else {
-            chessListTemp.forEach(chess -> {
-                if (!isPawnUnit(chess)) {
-                    addOtherSideChess(chess, chessList);
-                } else {
-                    // DO NOTHING
-                }
-            });
-
-            chessListTemp.clear();
-            chessListTemp.addAll(chessList);
-            chessListTemp.forEach(chess -> addOppositeChess(chess, chessList));
-        }
-
-        log.info("{} LENGTH", chessList.size());
-        this.chessMaps = chessList;
-    }
-
     private static void addOppositeChess(Chess chess, List<Chess> chessList) {
         Square oppositeSquare = Position.getOppositeSquare(chess.getPosition().getX(), chess.getPosition().getY());
         SideConstant oppositeSide = ChessUnit.getOpposite(chess.getSide());
@@ -79,6 +54,31 @@ public class ChessBoard {
         chessList.add(Chess.builder().side(SideConstant.WHITE).type(ChessUnitConstant.KNIGHT).position(new Square(2, ChessBoardConstant.MIN_Y)).build());
         chessList.add(Chess.builder().side(SideConstant.WHITE).type(ChessUnitConstant.BISHOP).position(new Square(3, ChessBoardConstant.MIN_Y)).build());
         chessList.add(Chess.builder().side(SideConstant.WHITE).type(ChessUnitConstant.QUEEN).position(new Square(4, ChessBoardConstant.MIN_Y)).build());
+    }
+
+    public void createGameStartMovable() {
+        List<Chess> chessList = new ArrayList<>();
+
+        generateBasePositionOfChess(chessList);
+        List<Chess> chessListTemp = new ArrayList<>(chessList);
+        if (chessList.isEmpty()) {
+            log.error("chessList EMPTY");
+        } else {
+            chessListTemp.forEach(chess -> {
+                if (!isPawnUnit(chess)) {
+                    addOtherSideChess(chess, chessList);
+                } else {
+                    // DO NOTHING
+                }
+            });
+
+            chessListTemp.clear();
+            chessListTemp.addAll(chessList);
+            chessListTemp.forEach(chess -> addOppositeChess(chess, chessList));
+        }
+
+        log.info("{} LENGTH", chessList.size());
+        this.chessMaps = chessList;
     }
 
 }

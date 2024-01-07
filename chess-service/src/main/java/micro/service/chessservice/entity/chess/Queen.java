@@ -16,6 +16,7 @@ import java.util.Set;
 @Data
 public class Queen extends Chess {
     private final ChessUnitConstant type = ChessUnitConstant.QUEEN;
+
     public Queen(SideConstant sideConstant, Square position, Set<Square> possibleMoves) {
         super(ChessUnitConstant.QUEEN, sideConstant, position, possibleMoves);
     }

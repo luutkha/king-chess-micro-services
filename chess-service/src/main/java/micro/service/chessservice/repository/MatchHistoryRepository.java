@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface MatchHistoryRepository extends JpaRepository<MatchHistory, Long> {
 
-   List< MatchHistory> findByGameId(Integer matchId);
+    List<MatchHistory> findByGameId(Integer matchId);
 }

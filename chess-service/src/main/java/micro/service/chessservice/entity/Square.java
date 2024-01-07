@@ -1,7 +1,6 @@
 package micro.service.chessservice.entity;
 
 import lombok.*;
-import micro.service.chessservice.constant.ChessBoardConstant;
 
 @Getter
 @Setter

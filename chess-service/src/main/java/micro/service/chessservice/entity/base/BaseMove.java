@@ -5,7 +5,7 @@ import micro.service.chessservice.entity.Square;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseMove implements Move{
+public class BaseMove implements Move {
     @Override
     public boolean moveTo() {
         return false;

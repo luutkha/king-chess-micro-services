@@ -3,8 +3,8 @@ package micro.service.chessservice.entity.movable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import micro.service.chessservice.entity.base.Move;
 import micro.service.chessservice.entity.Square;
+import micro.service.chessservice.entity.base.Move;
 
 import java.util.HashSet;
 import java.util.Set;

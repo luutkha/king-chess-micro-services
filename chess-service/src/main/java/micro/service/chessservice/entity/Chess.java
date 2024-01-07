@@ -14,9 +14,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class Chess {
-//    private String name;
+    //    private String name;
 //    private ChessUnit type;
-private ChessUnitConstant type;
+    private ChessUnitConstant type;
 
     private SideConstant side;  // black or white
     private Square position;

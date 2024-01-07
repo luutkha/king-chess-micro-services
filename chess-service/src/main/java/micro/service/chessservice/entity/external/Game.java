@@ -1,6 +1,5 @@
 package micro.service.chessservice.entity.external;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 //@Entity
@@ -13,7 +12,7 @@ import lombok.*;
 //@EntityListeners(AuditingEntityListener.class)
 public class Game extends AdditionalInfo {
 
-//    @Id
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

@@ -45,10 +45,11 @@ public class UserController {
     public ResponseEntity<Response<Object>> validateToken(@RequestParam("token") String token) {
         jwtUtils.extractUsername(token);
         ValidateTokenResponse bodyOfResponse = ValidateTokenResponse.builder().isValid(true).build();
-        Response<Object> validateTokenResponseResponse =  Response.builder().data(bodyOfResponse).statusCode(500).message("EXPIRED/INVALID TOKEN").build();
+        Response<Object> validateTokenResponseResponse = Response.builder().data(bodyOfResponse).statusCode(500).message("EXPIRED/INVALID TOKEN").build();
 
         return ResponseEntity.ok(validateTokenResponseResponse);
     }
+
     @GetMapping("/user/{email}")
     public ResponseEntity<User> getUserById(@PathVariable("email") String email) {
         System.out.println("CATCH");

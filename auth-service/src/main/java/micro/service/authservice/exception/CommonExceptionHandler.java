@@ -19,6 +19,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @Log4j2
 public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
+    private static String generateErrorMessage(RuntimeException ex) {
+        String errorMessage;
+        if (ex instanceof SignatureException) {
+            errorMessage = "Signature Exception";
+        } else if (ex instanceof ExpiredJwtException) {
+            errorMessage = "Expired JWT Exception";
+        } else if (ex instanceof JwtException) {
+            errorMessage = "JWT Exception";
+        } else {
+            errorMessage = "Unknown Exception";
+        }
+        return errorMessage;
+    }
+
     @ExceptionHandler(value
             = {
             SignatureException.class,
@@ -36,20 +50,6 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Response<Object> validateTokenResponseResponse = Response.builder().data(bodyOfResponse).statusCode(500).message(errorMessage).build();
         return new ResponseEntity<>(validateTokenResponseResponse, HttpStatus.UNAUTHORIZED);
 
-    }
-
-    private static String generateErrorMessage(RuntimeException ex) {
-        String errorMessage;
-        if (ex instanceof SignatureException) {
-            errorMessage = "Signature Exception";
-        } else if (ex instanceof ExpiredJwtException) {
-            errorMessage = "Expired JWT Exception";
-        } else if (ex instanceof JwtException) {
-            errorMessage = "JWT Exception";
-        } else {
-            errorMessage = "Unknown Exception";
-        }
-        return errorMessage;
     }
 
     @ExceptionHandler(value
