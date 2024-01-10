@@ -28,7 +28,7 @@ public class ChessBoard {
     private static void addOppositeChess(Chess chess, List<Chess> chessList) {
         Square oppositeSquare = Position.getOppositeSquare(chess.getPosition().getX(), chess.getPosition().getY());
         SideConstant oppositeSide = ChessUnit.getOpposite(chess.getSide());
-        Chess oppositeChess = Chess.builder().position(oppositeSquare).type(isQueenUnit(chess) ? ChessUnitConstant.KING : chess.getType()).side(oppositeSide).build();
+        Chess oppositeChess = Chess.builder().position(oppositeSquare).type(chess.getType()).side(oppositeSide).build();
         chessList.add(oppositeChess);
     }
 
@@ -48,7 +48,7 @@ public class ChessBoard {
 
     private static void generateBasePositionOfChess(List<Chess> chessList) {
         for (int i = ChessBoardConstant.MIN_X; i <= ChessBoardConstant.MAX_X; i++) {
-            chessList.add(Chess.builder().side(SideConstant.WHITE).type(ChessUnitConstant.PAWN).position(new Square(i, ChessBoardConstant.MIN_Y)).build());
+            chessList.add(Chess.builder().side(SideConstant.WHITE).type(ChessUnitConstant.PAWN).position(new Square(i, ChessBoardConstant.MIN_Y + 1)).build());
         }
         chessList.add(Chess.builder().side(SideConstant.WHITE).type(ChessUnitConstant.ROOK).position(new Square(1, ChessBoardConstant.MIN_Y)).build());
         chessList.add(Chess.builder().side(SideConstant.WHITE).type(ChessUnitConstant.KNIGHT).position(new Square(2, ChessBoardConstant.MIN_Y)).build());
@@ -67,8 +67,6 @@ public class ChessBoard {
             chessListTemp.forEach(chess -> {
                 if (!isPawnUnit(chess)) {
                     addOtherSideChess(chess, chessList);
-                } else {
-                    // DO NOTHING
                 }
             });
 
@@ -77,7 +75,11 @@ public class ChessBoard {
             chessListTemp.forEach(chess -> addOppositeChess(chess, chessList));
         }
 
-        log.info("{} LENGTH", chessList.size());
+        log.info("{} CREATED ALL POSITION OF CHESS UNIT ON CHESSBOARD", chessList.size());
+        this.chessMaps = chessList;
+        chessList.forEach(chess -> {
+            chess.setPossibleMoves(ChessUnit.generateMovablePositionOfChessUnit(chessMaps, chess));
+        });
         this.chessMaps = chessList;
     }
 

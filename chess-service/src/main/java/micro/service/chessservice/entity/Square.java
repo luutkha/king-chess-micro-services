@@ -9,13 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-//@Entity
-//@Table(name = "square")
+
 public class Square {
     private int x;
     private int y;
-//    @Id
-//    @GeneratedValue
-//    private Long id;
 
 }

@@ -11,6 +11,7 @@ import micro.service.chessservice.entity.movable.PlusShapeMove;
 import micro.service.chessservice.entity.movable.XShapeMove;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,11 +25,11 @@ public class Queen extends Chess {
     public Queen() {
     }
 
-    @Override
-    public void setPossibleMoves(Set<Square> possibleMoves) {
+    public Set<Square> generatePossibleMoves(Set<Square> possibleMoves, List<Chess> chessMaps) {
         MovableDecorator baseMove = new MovableDecorator(new BaseMove());
         MovableDecorator xMove = new XShapeMove(baseMove, this.getPosition());
         MovableDecorator plusMove = new PlusShapeMove(xMove, this.getPosition());
-        super.setPossibleMoves(plusMove.addMovablePosition(new HashSet<>()));
+        super.setPossibleMoves(plusMove.addMovablePosition(new HashSet<>(), chessMaps));
+        return this.getPossibleMoves();
     }
 }

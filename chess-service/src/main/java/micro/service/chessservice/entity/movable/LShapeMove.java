@@ -1,10 +1,12 @@
 package micro.service.chessservice.entity.movable;
 
 import lombok.extern.log4j.Log4j2;
+import micro.service.chessservice.entity.Chess;
 import micro.service.chessservice.entity.Square;
 import micro.service.chessservice.entity.base.Move;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Log4j2
@@ -19,15 +21,14 @@ public class LShapeMove extends MovableDecorator {
     }
 
     private void setPossiblePositionDefault() {
-        this.movablePosition.add(new Square(0, 0));
 
     }
 
     @Override
-    public Set<Square> addMovablePosition(Set<Square> movablePosition) {
-        log.info("addMovablePosition");
+    public Set<Square> addMovablePosition(Set<Square> movablePosition, List<Chess> chessMaps) {
+//        log.info("addMovablePosition");
         this.setPossiblePositionDefault();
-        this.movablePosition.addAll(super.addMovablePosition(this.movablePosition));
+        this.movablePosition.addAll(super.addMovablePosition(this.movablePosition, chessMaps));
         return this.movablePosition;
     }
 }

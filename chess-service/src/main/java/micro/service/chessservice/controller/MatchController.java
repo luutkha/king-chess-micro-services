@@ -1,5 +1,6 @@
 package micro.service.chessservice.controller;
 
+import lombok.extern.log4j.Log4j2;
 import micro.service.chessservice.config.WebClientConfig;
 import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.constant.SideConstant;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/matches")
+@Log4j2
 public class MatchController {
 
     public static final String GAME_SERVICE_URI = "lb://GAME-SERVICE//";
