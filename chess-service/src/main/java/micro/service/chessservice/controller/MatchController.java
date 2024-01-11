@@ -62,7 +62,9 @@ public class MatchController {
 
         ChessBoard chessBoard = new ChessBoard();
         chessBoard.setCount(0);
-        chessBoard.setGameId(resp.getId());
+        if (resp != null) {
+            chessBoard.setGameId(resp.getId());
+        }
         chessBoard.createGameStartMovable();
         return ResponseEntity.status(HttpStatus.CREATED).body(chessBoard);
     }

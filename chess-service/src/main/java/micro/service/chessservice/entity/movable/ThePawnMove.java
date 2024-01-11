@@ -10,23 +10,19 @@ import java.util.List;
 import java.util.Set;
 
 @Log4j2
-public class LShapeMove extends MovableDecorator {
+public class ThePawnMove extends MovableDecorator {
     private final Square position;
     private Set<Square> movablePosition;
 
-    public LShapeMove(Move move, Square position) {
+    public ThePawnMove(Move move, Square position) {
         super(move);
         this.position = position;
         this.movablePosition = new HashSet<>();
     }
 
+    // TODO: pawn have special case when kill other chess. implement later
     private void setPossiblePositionDefault() {
-
-        this.movablePosition.add(new Square(position.getX() + 1, position.getY() + 2));
-        this.movablePosition.add(new Square(position.getX() + 1, position.getY() - 2));
-        this.movablePosition.add(new Square(position.getX() + 2, position.getY() + 1));
-        this.movablePosition.add(new Square(position.getX() + 2, position.getY() - 1));
-
+        this.movablePosition.add(new Square(position.getX(), position.getY() + 1));
         this.movablePosition.removeIf(e -> e.getY() > 8 || e.getY() < 1 || e.getX() < 1 || e.getX() > 8);
     }
 

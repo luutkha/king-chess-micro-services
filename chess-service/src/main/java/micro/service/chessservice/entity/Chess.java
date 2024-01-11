@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.constant.SideConstant;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -22,6 +23,9 @@ public class Chess {
     private Square position;
     private Set<Square> possibleMoves;
 
+    public Set<Square> generatePossibleMoves(Set<Square> possibleMoves, List<Chess> chessMaps) {
+        return this.getPossibleMoves();
+    }
 //    public Chess(Side side, Square position, Set<Square> possibleMoves) {
 //        this.side = side;
 //        this.position = position;
