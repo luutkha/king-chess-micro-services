@@ -18,46 +18,33 @@ public final class ChessUnit {
     }
 
     public static Set<Square> generateMovablePositionOfChessUnit(List<Chess> chessMaps, Chess chess) {
-        List<Square> blackChessMaps = chessMaps.stream().filter(e -> e.getSide().equals(SideConstant.BLACK)).map(Chess::getPosition).toList();
-        List<Square> whiteChessMaps = chessMaps.stream().filter(e -> e.getSide().equals(SideConstant.WHITE)).map(Chess::getPosition).toList();
-        Set<Square> squares;
-        squares = switch (chess.getType()) {
-            case ROOK -> {
-                Chess rook = new Rook(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
-                yield getPossibleMoves(chessMaps, chess, blackChessMaps, whiteChessMaps, rook);
-            }
-            case KNIGHT -> {
-                Chess knight = new Knight(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
-                yield getPossibleMoves(chessMaps, chess, blackChessMaps, whiteChessMaps, knight);
-            }
-            case PAWN -> {
-                Chess pawn = new Pawn(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
-                yield getPossibleMoves(chessMaps, chess, blackChessMaps, whiteChessMaps, pawn);
-            }
-            case BISHOP -> {
-                Chess bishop = new Bishop(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
-                yield getPossibleMoves(chessMaps, chess, blackChessMaps, whiteChessMaps, bishop);
-            }
-            case QUEEN -> {
-                Chess queen = new Queen(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
-                yield getPossibleMoves(chessMaps, chess, blackChessMaps, whiteChessMaps, queen);
-            }
-            case KING -> {
-                Chess king = new King(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
-                yield getPossibleMoves(chessMaps, chess, blackChessMaps, whiteChessMaps, king);
-            }
+
+        Chess chessMapped = switch (chess.getType()) {
+            case ROOK -> new Rook(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
+            case KNIGHT -> new Knight(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
+            case PAWN -> new Pawn(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
+            case BISHOP -> new Bishop(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
+            case QUEEN -> new Queen(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
+            case KING -> new King(chess.getSide(), chess.getPosition(), chess.getPossibleMoves());
         };
-        return squares;
+
+        return getPossibleMoves(chessMaps, chess, chessMapped);
+
     }
 
-    private static Set<Square> getPossibleMoves(List<Chess> chessMaps, Chess chess, List<Square> blackChessMaps, List<Square> whiteChessMaps, Chess newChessInstance) {
+    private static Set<Square> getPossibleMoves(List<Chess> chessMaps, Chess chess, Chess newChessInstance) {
         Set<Square> possibleMoves = newChessInstance.generatePossibleMoves(chess.getPossibleMoves(), chessMaps);
-        possibleMoves.remove(chess.getPosition());
+        removeMovablePositionsThatContainAllyUnit(chessMaps, chess, possibleMoves);
+        return possibleMoves;
+    }
+
+    private static void removeMovablePositionsThatContainAllyUnit(List<Chess> chessMaps, Chess chess, Set<Square> possibleMoves) {
         if (chess.getSide().equals(SideConstant.WHITE)) {
+            List<Square> whiteChessMaps = chessMaps.stream().filter(e -> e.getSide().equals(SideConstant.WHITE)).map(Chess::getPosition).toList();
             whiteChessMaps.forEach(possibleMoves::remove);
         } else {
+            List<Square> blackChessMaps = chessMaps.stream().filter(e -> e.getSide().equals(SideConstant.BLACK)).map(Chess::getPosition).toList();
             blackChessMaps.forEach(possibleMoves::remove);
         }
-        return possibleMoves;
     }
 }
