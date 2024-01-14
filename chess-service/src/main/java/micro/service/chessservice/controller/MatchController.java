@@ -4,12 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import micro.service.chessservice.config.WebClientConfig;
 import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.constant.SideConstant;
-import micro.service.chessservice.entity.ChessBoard;
-import micro.service.chessservice.entity.ChessUnitMovable;
-import micro.service.chessservice.entity.MatchHistory;
-import micro.service.chessservice.entity.Square;
+import micro.service.chessservice.entity.*;
 import micro.service.chessservice.entity.chess.Queen;
 import micro.service.chessservice.entity.external.Game;
+import micro.service.chessservice.entity.request.MoveAChessRequest;
+import micro.service.chessservice.entity.response.MoveAChessResponse;
 import micro.service.chessservice.service.MatchHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,16 +29,6 @@ public class MatchController {
     private MatchHistoryService matchHistoryService;
     @Autowired
     private WebClientConfig webClientConfig;
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<MatchHistory> getMatchById(@PathVariable Long id) {
-//        MatchHistory match = matchHistoryService.;
-//        if (match != null) {
-//            return ResponseEntity.ok(match);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     private static List<ChessUnitMovable> createChessUnitMovables() {
         ChessUnitMovable chessUnitMovable = ChessUnitMovable.builder().chessUnitConstant(ChessUnitConstant.KING).movablePositions(new HashSet<>()).currentPosition(new Square(1, 1)).build();
@@ -72,28 +61,20 @@ public class MatchController {
     @PostMapping("/move")
     @ResponseStatus(HttpStatus.CREATED)
 
-    public ResponseEntity<MatchHistory> moveAChess(@RequestBody MatchHistory match) {
-        MatchHistory createdMatch = matchHistoryService.moveAChess(match);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdMatch);
+    public ResponseEntity<MoveAChessResponse> moveAChess(@RequestBody MoveAChessRequest match) {
+        MatchHistory matchHistory = matchHistoryService.moveAChess(match);
+        ChessBoard chessBoard = new ChessBoard();
+        chessBoard.setChessMaps(match.getChessBoard().getChessMaps());
+        Chess chess = Chess.builder()
+                .type(match.getType())
+                .side(match.getSide())
+                .position(new Square(match.getCurrentPositionX(), match.getCurrentPositionY()))
+                .build();
+        chessBoard.processMoveAChess(chess, new Square(match.getNewPositionX(), match.getNewPositionY()));
+        MoveAChessResponse moveAChessResponse = MoveAChessResponse.builder()
+                .chessBoard(chessBoard)
+                .matchHistory(matchHistory)
+                .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(moveAChessResponse);
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<MatchHistory> updateMatch(@PathVariable Long id, @RequestBody MatchHistory match) {
-//        MatchHistory updatedMatch = matchService.updateMatch(id, match);
-//        if (updatedMatch != null) {
-//            return ResponseEntity.ok(updatedMatch);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteMatch(@PathVariable Long id) {
-//        boolean deleted = matchService.deleteMatch(id);
-//        if (deleted) {
-//            return ResponseEntity.noContent().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 }

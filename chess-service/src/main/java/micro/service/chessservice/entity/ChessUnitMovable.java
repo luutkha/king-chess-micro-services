@@ -14,5 +14,4 @@ public class ChessUnitMovable {
     private ChessUnitConstant chessUnitConstant;
     private Square currentPosition;
     private Set<Square> movablePositions;
-
 }

@@ -3,6 +3,8 @@ package micro.service.chessservice.entity.base;
 import lombok.extern.log4j.Log4j2;
 import micro.service.chessservice.constant.SideConstant;
 import micro.service.chessservice.entity.Chess;
+import micro.service.chessservice.entity.ChessBoard;
+import micro.service.chessservice.entity.MatchHistory;
 import micro.service.chessservice.entity.Square;
 import micro.service.chessservice.entity.chess.*;
 
@@ -46,5 +48,19 @@ public final class ChessUnit {
             List<Square> blackChessMaps = chessMaps.stream().filter(e -> e.getSide().equals(SideConstant.BLACK)).map(Chess::getPosition).toList();
             blackChessMaps.forEach(possibleMoves::remove);
         }
+    }
+
+    public static boolean isQualifiedMove(MatchHistory history, ChessBoard chessBoard) {
+        Chess chess = Chess.builder()
+                .side(history.getSide())
+                .type(history.getType())
+                .position(new Square(history.getCurrentPositionX(), history.getCurrentPositionY()))
+                .build();
+        List<Chess> chessUnitQualified = chessBoard.getChessMaps().stream().filter(e -> e.getSide().equals(chess.getSide()) && e.getType().equals(chess.getType()) && e.getPosition().equals(chess.getPosition())).toList();
+
+        if (!chessUnitQualified.isEmpty()) {
+            return chessUnitQualified.get(0).getPossibleMoves().contains(new Square(history.getNewPositionX(), history.getNewPositionY()));
+        }
+        return false;
     }
 }

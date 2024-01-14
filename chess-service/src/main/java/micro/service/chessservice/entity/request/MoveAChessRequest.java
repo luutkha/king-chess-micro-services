@@ -1,33 +1,25 @@
-package micro.service.chessservice.entity;
+package micro.service.chessservice.entity.request;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.constant.SideConstant;
+import micro.service.chessservice.entity.ChessBoard;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "match_history", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"game_id", "step"})
-})
-@Entity
-@Builder
-//@IdClass(MatchHistoryId.class)
-public class MatchHistory {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    @Column(name = "game_id")
+@Getter
+@Setter
+public class MoveAChessRequest {
+    
+    @NotNull
     private Integer gameId;
+    @NotNull
     private Integer step;
+    @NotNull
+    private ChessBoard chessBoard;
     @NotNull
     private ChessUnitConstant type;
     @NotNull

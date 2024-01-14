@@ -83,4 +83,27 @@ public class ChessBoard {
         this.chessMaps = chessList;
     }
 
+
+    public void processMoveAChess(Chess chess, Square newPosition) {
+        List<Chess> chessList = new ArrayList<>(this.chessMaps);
+        List<Chess> chessOfEnemyWillBeDeleted = new ArrayList<>();
+
+        updateChessToNewPositionAndKillEnemy(chess, newPosition, chessOfEnemyWillBeDeleted);
+
+        this.chessMaps.removeAll(chessOfEnemyWillBeDeleted);
+
+        chessList.forEach(c -> {
+            c.setPossibleMoves(ChessUnit.generateMovablePositionOfChessUnit(chessMaps, c));
+        });
+    }
+
+    private void updateChessToNewPositionAndKillEnemy(Chess chess, Square newPosition, List<Chess> chessOfEnemyWillBeDeleted) {
+        this.getChessMaps().forEach(e -> {
+            if (e.getSide().equals(chess.getSide()) && e.getType().equals(chess.getType()) && e.getPosition().equals(chess.getPosition())) {
+                e.setPosition(newPosition);
+                chessOfEnemyWillBeDeleted.addAll(this.getChessMaps().stream().filter(ch -> ch.getPosition().equals(newPosition)).toList());
+            }
+        });
+    }
+
 }

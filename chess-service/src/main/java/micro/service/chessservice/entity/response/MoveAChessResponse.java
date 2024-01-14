@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.entity.ChessBoard;
+import micro.service.chessservice.entity.MatchHistory;
 import micro.service.chessservice.entity.MovableMap;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Builder
 public class MoveAChessResponse {
     private ChessBoard chessBoard;
-    private MovableMap movableMap;
-    private List<ChessUnitConstant> removedChessUnitConstants;
+    private MatchHistory matchHistory;
+//    private MovableMap movableMap;
+//    private List<ChessUnitConstant> removedChessUnitConstants;
 }

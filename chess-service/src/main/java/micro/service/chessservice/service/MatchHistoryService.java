@@ -1,6 +1,7 @@
 package micro.service.chessservice.service;
 
 import micro.service.chessservice.entity.MatchHistory;
+import micro.service.chessservice.entity.request.MoveAChessRequest;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface MatchHistoryService {
 
     MatchHistory createMatch();
 
-    MatchHistory moveAChess(MatchHistory match);
+    MatchHistory moveAChess(MoveAChessRequest match);
 }
