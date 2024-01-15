@@ -1,6 +1,7 @@
 package micro.service.chessservice.config.exception;
 
 import lombok.extern.log4j.Log4j2;
+import micro.service.chessservice.entity.exception.WrongMoveException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +13,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 @Log4j2
-public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
+public class MatchExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {RuntimeException.class, IllegalArgumentException.class, IllegalStateException.class})
+    @ExceptionHandler(value = { WrongMoveException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ResponseEntity<Object> handleLoginFail(
             RuntimeException ex, WebRequest request) {
-
-        log.error("CATCH UNEXPECTED ERROR", ex);
-        String bodyOfResponse = "Unexpected Error";
+        log.error("CATCH WrongMoveException ERROR");
+        String bodyOfResponse = ex.getMessage().toUpperCase();
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
-
 }

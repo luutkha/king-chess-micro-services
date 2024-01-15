@@ -13,11 +13,7 @@ import micro.service.chessservice.entity.ChessBoard;
 @Getter
 @Setter
 public class MoveAChessRequest {
-    
-    @NotNull
-    private Integer gameId;
-    @NotNull
-    private Integer step;
+
     @NotNull
     private ChessBoard chessBoard;
     @NotNull

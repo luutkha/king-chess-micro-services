@@ -1,6 +1,7 @@
 package micro.service.chessservice.service;
 
 import micro.service.chessservice.entity.MatchHistory;
+import micro.service.chessservice.entity.exception.WrongMoveException;
 import micro.service.chessservice.entity.request.MoveAChessRequest;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface MatchHistoryService {
 
     MatchHistory createMatch();
 
-    MatchHistory moveAChess(MoveAChessRequest match);
+    MatchHistory moveAChess(MoveAChessRequest match) throws WrongMoveException;
 }

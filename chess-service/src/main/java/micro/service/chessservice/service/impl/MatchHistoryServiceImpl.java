@@ -4,6 +4,7 @@ import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.constant.SideConstant;
 import micro.service.chessservice.entity.MatchHistory;
 import micro.service.chessservice.entity.base.ChessUnit;
+import micro.service.chessservice.entity.exception.WrongMoveException;
 import micro.service.chessservice.entity.request.MoveAChessRequest;
 import micro.service.chessservice.repository.MatchHistoryRepository;
 import micro.service.chessservice.service.MatchHistoryService;
@@ -42,7 +43,7 @@ public class MatchHistoryServiceImpl implements MatchHistoryService {
     @Override
     public MatchHistory createMatch() {
         MatchHistory matchHistory = MatchHistory.builder()
-                .step(0)
+                .count(0)
                 .side(SideConstant.WHITE)
                 .type(ChessUnitConstant.KING)
                 .newPositionY(1)
@@ -54,17 +55,21 @@ public class MatchHistoryServiceImpl implements MatchHistoryService {
     }
 
     @Override
-    public MatchHistory moveAChess(MoveAChessRequest match) {
+    public MatchHistory moveAChess(MoveAChessRequest match) throws WrongMoveException {
         MatchHistory matchHistory = convertDtoToEntity(match);
         if (ChessUnit.isQualifiedMove(matchHistory, match.getChessBoard())) {
             return matchHistoryRepository.save(matchHistory);
+        } else {
+            throw new WrongMoveException("Wrong move! Please try again");
         }
-        throw new RuntimeException();
     }
 
     private static MatchHistory convertDtoToEntity(MoveAChessRequest match) {
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(match, MatchHistory.class);
+        MatchHistory matchHistory = modelMapper.map(match, MatchHistory.class);
+        matchHistory.setGameId(match.getChessBoard().getGameId());
+        matchHistory.setCount(match.getChessBoard().getCount());
+        return matchHistory;
     }
 
 }

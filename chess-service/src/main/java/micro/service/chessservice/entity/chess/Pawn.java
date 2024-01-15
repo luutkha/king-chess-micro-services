@@ -22,7 +22,7 @@ public class Pawn extends Chess {
 
     public Set<Square> generatePossibleMoves(Set<Square> possibleMoves, List<Chess> chessMaps) {
         MovableDecorator baseMove = new MovableDecorator(new BaseMove());
-        MovableDecorator thePawnMove = new ThePawnMove(baseMove, this.getPosition());
+        MovableDecorator thePawnMove = new ThePawnMove(baseMove, this.getPosition(), this.getSide());
         super.setPossibleMoves(thePawnMove.addMovablePosition(new HashSet<>(), chessMaps));
         return this.getPossibleMoves();
     }

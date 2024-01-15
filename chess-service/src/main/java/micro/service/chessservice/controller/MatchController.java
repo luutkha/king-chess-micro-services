@@ -6,6 +6,7 @@ import micro.service.chessservice.constant.ChessUnitConstant;
 import micro.service.chessservice.constant.SideConstant;
 import micro.service.chessservice.entity.*;
 import micro.service.chessservice.entity.chess.Queen;
+import micro.service.chessservice.entity.exception.WrongMoveException;
 import micro.service.chessservice.entity.external.Game;
 import micro.service.chessservice.entity.request.MoveAChessRequest;
 import micro.service.chessservice.entity.response.MoveAChessResponse;
@@ -60,21 +61,29 @@ public class MatchController {
 
     @PostMapping("/move")
     @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<MoveAChessResponse> moveAChess(@RequestBody MoveAChessRequest moveAChessRequest) throws WrongMoveException {
 
-    public ResponseEntity<MoveAChessResponse> moveAChess(@RequestBody MoveAChessRequest match) {
-        MatchHistory matchHistory = matchHistoryService.moveAChess(match);
-        ChessBoard chessBoard = new ChessBoard();
-        chessBoard.setChessMaps(match.getChessBoard().getChessMaps());
+        MatchHistory matchHistory = matchHistoryService.moveAChess(moveAChessRequest);
+
         Chess chess = Chess.builder()
-                .type(match.getType())
-                .side(match.getSide())
-                .position(new Square(match.getCurrentPositionX(), match.getCurrentPositionY()))
+                .type(moveAChessRequest.getType())
+                .side(moveAChessRequest.getSide())
+                .position(new Square(moveAChessRequest.getCurrentPositionX(), moveAChessRequest.getCurrentPositionY()))
                 .build();
-        chessBoard.processMoveAChess(chess, new Square(match.getNewPositionX(), match.getNewPositionY()));
-        MoveAChessResponse moveAChessResponse = MoveAChessResponse.builder()
+
+        ChessBoard chessBoard = ChessBoard.builder()
+                .chessMaps(moveAChessRequest.getChessBoard().getChessMaps())
+                .gameId(matchHistory.getGameId())
+                .count(matchHistory.getCount())
+                .build();
+
+        chessBoard.processMoveAChess(chess, new Square(moveAChessRequest.getNewPositionX(), moveAChessRequest.getNewPositionY()));
+
+        MoveAChessResponse response = MoveAChessResponse.builder()
                 .chessBoard(chessBoard)
                 .matchHistory(matchHistory)
                 .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(moveAChessResponse);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

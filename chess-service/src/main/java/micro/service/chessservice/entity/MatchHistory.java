@@ -27,7 +27,7 @@ public class MatchHistory {
     Integer id;
     @Column(name = "game_id")
     private Integer gameId;
-    private Integer step;
+    private Integer count;
     @NotNull
     private ChessUnitConstant type;
     @NotNull

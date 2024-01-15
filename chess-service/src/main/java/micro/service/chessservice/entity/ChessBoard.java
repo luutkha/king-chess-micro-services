@@ -10,7 +10,9 @@ import micro.service.chessservice.entity.base.ChessUnit;
 import micro.service.chessservice.entity.base.Position;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +23,7 @@ import java.util.List;
 @Log4j2
 public class ChessBoard {
     private Integer gameId;
-    private Integer id;
+//    private Integer id;
     private Integer count;
     private List<Chess> chessMaps;
 
@@ -85,17 +87,24 @@ public class ChessBoard {
 
 
     public void processMoveAChess(Chess chess, Square newPosition) {
-        List<Chess> chessList = new ArrayList<>(this.chessMaps);
         List<Chess> chessOfEnemyWillBeDeleted = new ArrayList<>();
 
         updateChessToNewPositionAndKillEnemy(chess, newPosition, chessOfEnemyWillBeDeleted);
 
         this.chessMaps.removeAll(chessOfEnemyWillBeDeleted);
-
-        chessList.forEach(c -> {
-            c.setPossibleMoves(ChessUnit.generateMovablePositionOfChessUnit(chessMaps, c));
+        this.chessMaps.stream().map(c -> {
+            if (!c.getSide().equals(ChessUnit.getOpposite(chess.getSide()))) {
+                c.setPossibleMoves(new HashSet<>());
+            }
+            else {
+                Set<Square> squares = ChessUnit.generateMovablePositionOfChessUnit(chessMaps, c);
+                c.setPossibleMoves(squares);
+            }
+            return c;
         });
+
     }
+
 
     private void updateChessToNewPositionAndKillEnemy(Chess chess, Square newPosition, List<Chess> chessOfEnemyWillBeDeleted) {
         this.getChessMaps().forEach(e -> {
