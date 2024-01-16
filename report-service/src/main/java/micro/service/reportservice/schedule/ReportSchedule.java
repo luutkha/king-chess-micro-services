@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 @Component
 public class ReportSchedule {
 
-    @Scheduled(fixedRate = 5000) // Run every 5 seconds
-//    @Scheduled(cron = "0 0 3 * * ?")
+//    @Scheduled(fixedRate = 5000) // Run every 5 seconds
+    @Scheduled(cron = "0 0 3 * * ?")
 
     public void runScheduledTask() {
         System.out.println("Executing scheduled task...");
