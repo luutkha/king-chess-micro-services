@@ -22,18 +22,18 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Autowired
     private RouteValidator validator;
 
-    @Autowired
-    private RestTemplate restTemplate;
+//    @Autowired
+//    private RestTemplate restTemplate;
 
     @Autowired
     private WebClientConfig webClient;
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+//    @Autowired
+//    private KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(String msg) {
-        kafkaTemplate.send("logger", msg);
-    }
+//    public void sendMessage(String msg) {
+//        kafkaTemplate.send("logger", msg);
+//    }
 
     public AuthenticationFilter() {
         super(Config.class);
@@ -44,7 +44,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return ((exchange, chain) -> {
             log.error(exchange.getRequest().getURI());
             log.error(exchange.getRequest().getMethod());
-            sendMessage(exchange.getRequest().getURI().toString());
+//            sendMessage(exchange.getRequest().getURI().toString());
 
             if (validator.isSecured.test(exchange.getRequest())) {
                 //header contains token or not
